@@ -1,0 +1,26 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c474df662b..4ab46e402c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -40,6 +40,21 @@ project(
+     LANGUAGES C CXX
+     HOMEPAGE_URL "https://dawn.googlesource.com/dawn"
+ )
++
++find_package(glfw3 CONFIG REQUIRED)
++find_package(glslang CONFIG REQUIRED)
++add_library(glslang ALIAS glslang::glslang)
++add_library(glslang-default-resource-limits INTERFACE)
++find_package(VulkanUtilityLibraries CONFIG REQUIRED)
++find_package(VulkanHeaders CONFIG REQUIRED)
++add_library(Vulkan-Headers ALIAS Vulkan::Headers)
++find_path(SPIRV_HEADERS_INCLUDE_DIRS "spirv/1.0/GLSL.std.450.h")
++add_library(SPIRV-Headers INTERFACE)
++target_include_directories(SPIRV-Headers INTERFACE "${SPIRV_HEADERS_INCLUDE_DIRS}")
++find_package(libprotobuf-mutator CONFIG REQUIRED)
++add_library(libprotobuf-mutator ALIAS libprotobuf-mutator::protobuf-mutator)
++cmake_path(GET SPIRV_HEADERS_INCLUDE_DIRS PARENT_PATH SPIRV-Headers_SOURCE_DIR)
++
+ enable_testing()
+ 
+ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
